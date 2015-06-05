@@ -1,8 +1,11 @@
 plot3 <- function(){
+  
   library(dplyr)
-  # copy household_power_consumption.txt to the working directory
+  library(lubridate)
+  
   setClass('myDate')
-  setAs("character","myTime", function(from) strptime(from, format="%H:%M:%S") )
+  setAs("character","myDate", function(from) as.Date(from, format="%d/%m/%Y") )
+  # copy household_power_consumption.txt to the working directory
   data <- read.table("household_power_consumption.txt", sep = ";", na.strings = "?", 
                      stringsAsFactors = F, skip = 66637, nrows = 2880,
                      col.names = c("Date", "Time", "Global_active_power", 

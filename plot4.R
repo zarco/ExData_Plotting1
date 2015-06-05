@@ -1,8 +1,11 @@
 plot4 <- function(){
+  
   library(dplyr)
-  # copy household_power_consumption.txt to the working directory
+  library(lubridate)
+  
   setClass('myDate')
-  setAs("character","myTime", function(from) strptime(from, format="%H:%M:%S") )
+  setAs("character","myDate", function(from) as.Date(from, format="%d/%m/%Y") )
+  # copy household_power_consumption.txt to the working directory
   data <- read.table("household_power_consumption.txt", sep = ";", na.strings = "?", 
                      stringsAsFactors = F, skip = 66637, nrows = 2880,
                      col.names = c("Date", "Time", "Global_active_power", 
@@ -11,8 +14,8 @@ plot4 <- function(){
                      colClasses = c("myDate","character", rep("numeric",7))
   )
   data <- mutate(data, Date_Time=ymd_hms(paste(Date, " " ,Time)))
-  par(mfrow=c(2,2))
   png(filename = "plot4.png", width = 480, height = 480, units = "px")
+  par(mfrow=c(2,2))
   #Plot1
   plot(data$Date_Time, data$Global_active_power, ylab = "Global Active Power",
        xlab="", type = "l")
